@@ -31,7 +31,11 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
+<<<<<<< HEAD
 , "app/admin-login/page.js"  ],
+=======
+  ],
+>>>>>>> 6b123284ae613e551516b95cd45c66554a6711d3
   "exclude": [
     "node_modules"
   ]
