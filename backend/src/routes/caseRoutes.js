@@ -8,14 +8,15 @@ const {
     deleteCase,
 } = require('../controllers/caseController');
 const { protect } = require('../middleware/authMiddleware');
+const upload = require('../middleware/uploadMiddleware');
 
 router.route('/')
     .get(getCases)
-    .post(protect, createCase);
+    .post(protect, upload.single('image'), createCase);
 
 router.route('/:id')
     .get(getCaseById)
-    .put(protect, updateCase)
+    .put(protect, upload.single('image'), updateCase)
     .delete(protect, deleteCase);
 
 module.exports = router;

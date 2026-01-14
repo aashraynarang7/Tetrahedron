@@ -19,8 +19,9 @@ const createBlog = async (req, res) => {
     const { title, description, date } = req.body;
     console.log(title, description);
     let image = '';
+    console.log(req.file);
     if (req.file) {
-        image = req.file.location;
+        image = req.file.path;
     }
 
     try {

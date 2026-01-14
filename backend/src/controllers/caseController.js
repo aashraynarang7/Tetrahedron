@@ -16,10 +16,23 @@ const getCases = async (req, res) => {
 // @route   POST /api/cases
 // @access  Private
 const createCase = async (req, res) => {
-    // Allow arbitrary body
+    const { title, description } = req.body;
+
+    let image = '';
+    if (req.file) {
+        image = req.file.path;
+    }
+
     try {
-        const newCase = await Case.create(req.body);
-        res.status(201).json(newCase);
+        const newCase = new Case({
+            title,
+            description,
+            image,
+            createdBy: req.user._id
+        });
+
+        const savedCase = await newCase.save();
+        res.status(201).json(savedCase);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -46,14 +59,17 @@ const getCaseById = async (req, res) => {
 // @access  Private
 const updateCase = async (req, res) => {
     try {
-        // findByIdAndUpdate with { new: true } returns the updated document
-        // strict: false in model should allow new fields
-        const updatedCase = await Case.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true // Note: might need to be careful with strict validators if any
-        });
+        const foundCase = await Case.findById(req.params.id);
 
-        if (updatedCase) {
+        if (foundCase) {
+            foundCase.title = req.body.title || foundCase.title;
+            foundCase.description = req.body.description || foundCase.description;
+
+            if (req.file) {
+                foundCase.image = req.file.path;
+            }
+
+            const updatedCase = await foundCase.save();
             res.json(updatedCase);
         } else {
             res.status(404).json({ message: 'Case not found' });

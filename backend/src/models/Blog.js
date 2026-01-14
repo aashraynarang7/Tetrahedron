@@ -16,7 +16,6 @@ const blogSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: false,
     },
     // storing createdBy user ID is good practice even if just string author name is requested
     createdBy: {
