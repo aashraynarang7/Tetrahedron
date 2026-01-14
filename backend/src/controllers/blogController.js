@@ -16,13 +16,19 @@ const getBlogs = async (req, res) => {
 // @route   POST /api/blogs
 // @access  Private
 const createBlog = async (req, res) => {
-    const { title, description, author } = req.body;
+    const { title, description, date } = req.body;
+    console.log(title, description);
+    let image = '';
+    if (req.file) {
+        image = req.file.location;
+    }
 
     try {
         const blog = new Blog({
             title,
             description,
-            author,
+            date: date || Date.now(),
+            image,
             createdBy: req.user._id // from auth middleware
         });
 
@@ -60,6 +66,12 @@ const updateBlog = async (req, res) => {
             blog.title = req.body.title || blog.title;
             blog.description = req.body.description || blog.description;
             blog.author = req.body.author || blog.author;
+            if (req.body.date) {
+                blog.date = req.body.date;
+            }
+            if (req.file) {
+                blog.image = req.file.path;
+            }
 
             const updatedBlog = await blog.save();
             res.json(updatedBlog);

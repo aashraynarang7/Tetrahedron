@@ -8,14 +8,15 @@ const {
     deleteBlog,
 } = require('../controllers/blogController');
 const { protect } = require('../middleware/authMiddleware');
+const upload = require('../middleware/uploadMiddleware');
 
 router.route('/')
     .get(getBlogs)
-    .post(protect, createBlog);
+    .post(protect, upload.single('image'), createBlog);
 
 router.route('/:id')
     .get(getBlogById)
-    .put(protect, updateBlog)
+    .put(protect, upload.single('image'), updateBlog)
     .delete(protect, deleteBlog);
 
 module.exports = router;
