@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', require('./src/routes/authRoutes'));
 app.use('/api/blogs', require('./src/routes/blogRoutes'));
 app.use('/api/cases', require('./src/routes/caseRoutes'));
+app.use('/api/contact', require('./src/routes/contactRoutes'));
 
 // Root Route
 app.get('/', (req, res) => {
